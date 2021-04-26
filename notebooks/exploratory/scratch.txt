@@ -1,0 +1,36 @@
+Subject Age Group           0
+Subject ID                  0
+GO / SC Num                 0
+Terry Stop ID               0
+Stop Resolution             0
+Weapon Type                 0
+Officer ID                  0
+Officer YOB                 0
+Officer Gender              0
+Officer Race                0
+Subject Perceived Race      0
+Subject Perceived Gender    0
+Reported Date               0
+Reported Time               0
+Initial Call Type           0
+Final Call Type             0
+Call Type                   0
+Officer Squad               0
+Arrest Flag                 0
+Frisk Flag                  0
+Precinct                    0
+Sector                      0
+Beat                        0
+
+# getting new column list
+column_list = df.columns
+column_list
+
+# creating list to check value counts
+excluded = ['Officer YOB', 'Initial Call Type',
+            'Final Call Type','Call Type', 'Officer Squad']
+cols = [x for x in column_list if x not in excluded]
+
+# printing value counts
+for col in cols:
+    print(f'{df[col].value_counts()}\n')
