@@ -34,3 +34,6 @@ cols = [x for x in column_list if x not in excluded]
 # printing value counts
 for col in cols:
     print(f'{df[col].value_counts()}\n')
+    
+array([0.81246451, 0.80664395, 0.8056502 , 0.80820557, 0.80352073])
+array([0.81218058, 0.80337876, 0.80593413, 0.80976718, 0.80053947])
