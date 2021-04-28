@@ -26,3 +26,11 @@ def pre_score(y_true, y_pred):
 
 precision = make_scorer(pre_score)
 
+def f_score(y_true, y_pred):
+    
+    f1 = f1_score(y_true, y_pred)
+
+    return f1
+
+f1 = make_scorer(f_score)
+

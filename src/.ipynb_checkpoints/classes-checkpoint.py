@@ -88,4 +88,4 @@ class HarnessCCV:
         return kfold_train_scores, kfold_val_scores 
 
     def print_error(self, name, Accuracy):
-        print(f'{name} has an average percision of {Accuracy}')
+        print(f'{name} has an average {scorer} of {Accuracy}')
