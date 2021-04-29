@@ -22,6 +22,8 @@ from imblearn.pipeline import make_pipeline as make_sm_pipeline
 import pandas as pd
 import numpy as np
 
+from src import classes as c
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -70,3 +72,25 @@ def splitter(X, y):
                                                     stratify=y
                                                    )
     return  X_train, X_test, y_train, y_test
+
+
+
+
+def feature_test(df, model, feature_list):
+    string_selector = make_column_selector(dtype_include='object')
+    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
+    preprocessing = make_column_transformer((OneHotEncoder
+                                             (handle_unknown='ignore'),string_selector),
+                                            (StandardScaler(), number_selector))
+    sm = SMOTE(random_state=2021)
+    modeling = c.Harness(f1)
+    
+    for feature in feature_list:
+        feature_df = framer(df, [feature], feature_list)
+        X, y = Xy(feature_df)
+        X_train, X_test, y_train, y_test = splitter(X,y)
+        feature_pipe = make_sm_pipeline(preprocessing, sm, model)
+        modeling.report(feature_pipe, X_train, y_train,\
+                        f'{model} {feature} Model', f'{feature} added')
+    return modeling.history
+    
