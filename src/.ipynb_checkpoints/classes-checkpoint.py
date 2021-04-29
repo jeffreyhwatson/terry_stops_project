@@ -10,7 +10,8 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.compose import make_column_selector
 from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline 
-from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, make_scorer
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
+from sklearn.metrics import make_scorer, plot_confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.base import clone
@@ -32,7 +33,7 @@ class Harness:
         self.history = self.history.reset_index(drop=True)
         self.history = self.history.sort_values('Accuracy')
         self.print_error(name, scores.mean())
-        print(scores)
+#         print(scores)
         return scores
 
     def print_error(self, name, Accuracy):
