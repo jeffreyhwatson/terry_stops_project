@@ -37,3 +37,47 @@ for col in cols:
     
 array([0.81246451, 0.80664395, 0.8056502 , 0.80820557, 0.80352073])
 array([0.81218058, 0.80337876, 0.80593413, 0.80976718, 0.80053947])
+
+White           0.488735
+Black           0.297807
+Unknown         0.055515
+NA              0.039821
+Hispanic        0.035434
+Asian           0.032453
+N_American      0.028769
+Multi-Racial    0.017036
+Other           0.003237
+P_Islander      0.001193
+
+## KNN With Engineered Features
+Engineered columns from original EDA:
+
+'Weapon Flag', 'Reported Year', 'Reported Month', 'Day of Month', 'Day of Week', 'Reported Hour', 'Beat Flag'
+
+feature_list1 = ['Sector',
+ 'Beat',
+ 'Weapon Flag',
+ 'Reported Year',
+ 'Reported Month',
+ 'Day of Month',
+ 'Day of Week',
+ 'Reported Hour',
+ 'Beat Flag']
+ 
+ excluded1 = ['Weapon Type',
+ 'Initial Call Type',
+ 'Final Call Type',
+ 'Call Type',
+ 'Officer Squad',
+ 'Arrest Flag',
+ 'Frisk Flag',]
+ 
+ engineered = f.framer(df, feature_list1, excluded1)
+ 
+ f.feature_test(engineered, KNN, feature_list1)
+ 
+ f.feature_test(engineered, LR, feature_list1)
+ 
+ pipe.get_params().keys()
+ 
+ dict_keys(['memory', 'steps', 'verbose', 'columntransformer', 'smote', 'logisticregression', 'columntransformer__n_jobs', 'columntransformer__remainder', 'columntransformer__sparse_threshold', 'columntransformer__transformer_weights', 'columntransformer__transformers', 'columntransformer__verbose', 'columntransformer__onehotencoder', 'columntransformer__standardscaler', 'columntransformer__onehotencoder__categories', 'columntransformer__onehotencoder__drop', 'columntransformer__onehotencoder__dtype', 'columntransformer__onehotencoder__handle_unknown', 'columntransformer__onehotencoder__sparse', 'columntransformer__standardscaler__copy', 'columntransformer__standardscaler__with_mean', 'columntransformer__standardscaler__with_std', 'smote__k_neighbors', 'smote__n_jobs', 'smote__random_state', 'smote__sampling_strategy', 'logisticregression__C', 'logisticregression__class_weight', 'logisticregression__dual', 'logisticregression__fit_intercept', 'logisticregression__intercept_scaling', 'logisticregression__l1_ratio', 'logisticregression__max_iter', 'logisticregression__multi_class', 'logisticregression__n_jobs', 'logisticregression__penalty', 'logisticregression__random_state', 'logisticregression__solver', 'logisticregression__tol', 'logisticregression__verbose', 'logisticregression__warm_start'])

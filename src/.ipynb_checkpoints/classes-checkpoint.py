@@ -37,7 +37,7 @@ class Harness:
         return scores
 
     def print_error(self, name, Accuracy):
-        print(f'{name} has an average percision of {Accuracy}')
+        print(f'{name} has an average F1 of {Accuracy}')
 
 class HarnessCCV:
     

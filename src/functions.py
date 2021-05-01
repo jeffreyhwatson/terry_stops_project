@@ -46,10 +46,9 @@ f1 = make_scorer(f_score)
 
 def confusion(model, X, y):
     "Confusion matrix plotting aid."
-    model.fit(X, y)
     fig, ax = plt.subplots(figsize=(7, 7))
     plot_confusion_matrix(model, X, y,
-                          normalize='all', cmap=plt.cm.Blues,
+                          cmap=plt.cm.Blues,
                           display_labels=['No Arrest', 'Arrest'], ax=ax)
     plt.title('Confusion Matrix')
     plt.grid(False)
