@@ -81,3 +81,40 @@ feature_list1 = ['Sector',
  pipe.get_params().keys()
  
  dict_keys(['memory', 'steps', 'verbose', 'columntransformer', 'smote', 'logisticregression', 'columntransformer__n_jobs', 'columntransformer__remainder', 'columntransformer__sparse_threshold', 'columntransformer__transformer_weights', 'columntransformer__transformers', 'columntransformer__verbose', 'columntransformer__onehotencoder', 'columntransformer__standardscaler', 'columntransformer__onehotencoder__categories', 'columntransformer__onehotencoder__drop', 'columntransformer__onehotencoder__dtype', 'columntransformer__onehotencoder__handle_unknown', 'columntransformer__onehotencoder__sparse', 'columntransformer__standardscaler__copy', 'columntransformer__standardscaler__with_mean', 'columntransformer__standardscaler__with_std', 'smote__k_neighbors', 'smote__n_jobs', 'smote__random_state', 'smote__sampling_strategy', 'logisticregression__C', 'logisticregression__class_weight', 'logisticregression__dual', 'logisticregression__fit_intercept', 'logisticregression__intercept_scaling', 'logisticregression__l1_ratio', 'logisticregression__max_iter', 'logisticregression__multi_class', 'logisticregression__n_jobs', 'logisticregression__penalty', 'logisticregression__random_state', 'logisticregression__solver', 'logisticregression__tol', 'logisticregression__verbose', 'logisticregression__warm_start'])
+ 
+def forward_selection(df, target, model):
+    remaining = set(df.columns)
+    remaining.remove(target)
+    selected = []
+    current_score, best_new_score = 0.0, 0.0
+    
+    string_selector = make_column_selector(dtype_include='object')
+    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
+    preprocessing = make_column_transformer((OneHotEncoder
+                                             (handle_unknown='ignore'),string_selector),
+                                            (StandardScaler(), number_selector))
+    
+    while remaining and current_score == best_new_score:
+            scores_with_candidates = []
+    
+            for candidate in remaining:
+                feature_df = framer(df, [candidate], remaining)
+                X, y = Xy(feature_df)
+                X_train, X_test, y_train, y_test = splitter(X,y)
+                feature_pipe = make_pipeline(preprocessing, model)
+                feature_pipe.fit(X_train, y_train)
+                score = f1_score(feature_pipe.predict(X_train), y_train)
+                scores_with_candidates.append((score, candidate))
+            scores_with_candidates.sort()
+            best_new_score, best_candidate = scores_with_candidates.pop()
+            if current_score < best_new_score:
+                remaining.remove(best_candidate)
+                selected.append(best_candidate)
+                current_score = best_new_score
+    feature_df = framer(df, [selected], remaining)
+    X, y = Xy(feature_df)
+    X_train, X_test, y_train, y_test = splitter(X,y)
+    feature_pipe = make_pipeline(preprocessing, model)
+    score = f1_score(feature_pipe.predict(X_train), y_train)
+    return score
+

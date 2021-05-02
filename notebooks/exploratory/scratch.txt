@@ -81,3 +81,92 @@ feature_list1 = ['Sector',
  pipe.get_params().keys()
  
  dict_keys(['memory', 'steps', 'verbose', 'columntransformer', 'smote', 'logisticregression', 'columntransformer__n_jobs', 'columntransformer__remainder', 'columntransformer__sparse_threshold', 'columntransformer__transformer_weights', 'columntransformer__transformers', 'columntransformer__verbose', 'columntransformer__onehotencoder', 'columntransformer__standardscaler', 'columntransformer__onehotencoder__categories', 'columntransformer__onehotencoder__drop', 'columntransformer__onehotencoder__dtype', 'columntransformer__onehotencoder__handle_unknown', 'columntransformer__onehotencoder__sparse', 'columntransformer__standardscaler__copy', 'columntransformer__standardscaler__with_mean', 'columntransformer__standardscaler__with_std', 'smote__k_neighbors', 'smote__n_jobs', 'smote__random_state', 'smote__sampling_strategy', 'logisticregression__C', 'logisticregression__class_weight', 'logisticregression__dual', 'logisticregression__fit_intercept', 'logisticregression__intercept_scaling', 'logisticregression__l1_ratio', 'logisticregression__max_iter', 'logisticregression__multi_class', 'logisticregression__n_jobs', 'logisticregression__penalty', 'logisticregression__random_state', 'logisticregression__solver', 'logisticregression__tol', 'logisticregression__verbose', 'logisticregression__warm_start'])
+ 
+def forward_selection(df, target, model):
+    remaining = set(df.columns)
+    remaining.remove(target)
+    selected = []
+    current_score, best_new_score = 0.0, 0.0
+    
+    string_selector = make_column_selector(dtype_include='object')
+    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
+    preprocessing = make_column_transformer((OneHotEncoder
+                                             (handle_unknown='ignore'),string_selector),
+                                            (StandardScaler(), number_selector))
+    
+    while remaining and current_score == best_new_score:
+            scores_with_candidates = []
+    
+            for candidate in remaining:
+                feature_df = framer(df, [candidate], remaining)
+                X, y = Xy(feature_df)
+                X_train, X_test, y_train, y_test = splitter(X,y)
+                feature_pipe = make_pipeline(preprocessing, model)
+                feature_pipe.fit(X_train, y_train)
+                score = f1_score(feature_pipe.predict(X_train), y_train)
+                scores_with_candidates.append((score, candidate))
+            scores_with_candidates.sort()
+            best_new_score, best_candidate = scores_with_candidates.pop()
+            if current_score < best_new_score:
+                remaining.remove(best_candidate)
+                selected.append(best_candidate)
+                current_score = best_new_score
+    feature_df = framer(df, [selected], remaining)
+    X, y = Xy(feature_df)
+    X_train, X_test, y_train, y_test = splitter(X,y)
+    feature_pipe = make_pipeline(preprocessing, model)
+    score = f1_score(feature_pipe.predict(X_train), y_train)
+    return score
+    
+class HarnessCCV:
+    
+    def __init__(self, scorer, random_state=2021):
+        self.scorer = scorer
+        self.history = pd.DataFrame(columns=['Name', 'Accuracy', 'Notes'])
+
+    def report(self, estimator, X, y, name, notes=''):
+        # Create a list to hold the scores from each fold
+        kfold_val_scores = np.ndarray(5)
+        kfold_train_scores = np.ndarray(5)
+
+        # Instantiate a splitter object and loop over its result
+        kfold = StratifiedKFold(n_splits=5)
+        for fold, (train_index, val_index) in enumerate(kfold.split(X, y)):
+            # Extract train and validation subsets using the provided indices
+            X_t, X_val = X.iloc[train_index], X.iloc[val_index]
+            y_t, y_val = y.iloc[train_index], y.iloc[val_index]
+        
+            # Instantiate StandardScaler
+            scaler = StandardScaler()
+            # Fit and transform X_t
+            X_t_scaled = scaler.fit_transform(X_t)
+            # Transform X_val
+            X_val_scaled = scaler.transform(X_val)
+        
+            # Instantiate SMOTE
+            sm = SMOTE(random_state=2021)
+            # Fit and transform X_t_scaled and y_t using sm
+            X_t_oversampled, y_t_oversampled = sm.fit_resample(X_t_scaled, y_t)
+        
+            # Clone the provided model and fit it on the train subset
+            temp_model = clone(estimator)
+            temp_model.fit(X_t_oversampled, y_t_oversampled)
+        
+            # Evaluate the model on the validation subsets
+            score_train = precision_score(temp_model.predict(X_t_oversampled), y_t_oversampled)
+            scores_val = precision_score(temp_model.predict(X_val_scaled), y_val)
+            kfold_train_scores[fold] = score_train
+            kfold_val_scores[fold] = scores_val
+        
+        frame = pd.DataFrame([[name, scores_val.mean(), notes]], columns=['Name', 'Accuracy', 'Notes'])
+        self.history = self.history.append(frame)
+        self.history = self.history.reset_index(drop=True)
+        self.history = self.history.sort_values('Accuracy')
+        self.print_error(name, scores_val.mean())
+        print(kfold_val_scores)
+                               
+        return kfold_train_scores, kfold_val_scores 
+
+    def print_error(self, name, Accuracy):
+        print(f'{name} has an average {scorer} of {Accuracy}')
+

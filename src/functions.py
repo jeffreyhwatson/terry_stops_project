@@ -81,6 +81,23 @@ def feature_test(df, model, feature_list):
     preprocessing = make_column_transformer((OneHotEncoder
                                              (handle_unknown='ignore'),string_selector),
                                             (StandardScaler(), number_selector))
+    modeling = c.Harness(f1)
+    for feature in feature_list:
+        feature_df = framer(df, [feature], feature_list)
+        X, y = Xy(feature_df)
+        X_train, X_test, y_train, y_test = splitter(X,y)
+        feature_pipe = make_pipeline(preprocessing, model)
+        modeling.report(feature_pipe, X_train, y_train,\
+                        f'{model} {feature} Model', f'{feature} added')
+    return modeling.history
+
+
+def feature_test_sm(df, model, feature_list):
+    string_selector = make_column_selector(dtype_include='object')
+    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
+    preprocessing = make_column_transformer((OneHotEncoder
+                                             (handle_unknown='ignore'),string_selector),
+                                            (StandardScaler(), number_selector))
     sm = SMOTE(random_state=2021)
     modeling = c.Harness(f1)
     
@@ -91,5 +108,6 @@ def feature_test(df, model, feature_list):
         feature_pipe = make_sm_pipeline(preprocessing, sm, model)
         modeling.report(feature_pipe, X_train, y_train,\
                         f'{model} {feature} Model', f'{feature} added')
-    return modeling.history
-    
+    return modeling.history        
+
+
