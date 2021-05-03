@@ -110,38 +110,15 @@ def feature_test_sm(df, model, feature_list):
                         f'{model} {feature} Model', f'{feature} added')
     return modeling.history        
 
-def forward_selection(df, target, model):
-    remaining = set(df.columns)
-    remaining.remove(target)
-    selected = []
-    current_score, best_new_score = 0.0, 0.0
+
+def subsplit_test(X_train, y_train, model):
+    modeling = c.Harness(f1)
+    Xs_train, Xs_test, ys_train, ys_test = splitter(X_train, y_train)
+    model.fit(Xs_train, ys_train)
+    train_score = f1_score(model.predict(Xs_train), ys_train)
+    test_score = f1_score(model.predict(Xs_test), ys_test)
+    confusion(model, Xs_train, ys_train)
+    confusion(model, Xs_test, ys_test)
+    report = pd.DataFrame([[train_score, test_score]], columns=['Train F1', 'Test F1'])
+    return report
     
-    string_selector = make_column_selector(dtype_include='object')
-    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
-    preprocessing = make_column_transformer((OneHotEncoder
-                                             (handle_unknown='ignore'),string_selector),
-                                            (StandardScaler(), number_selector))
-    
-    while remaining and current_score == best_new_score:
-            scores_with_candidates = []
-    
-            for candidate in remaining:
-                feature_df = framer(df, [candidate], remaining)
-                X, y = Xy(feature_df)
-                X_train, X_test, y_train, y_test = splitter(X,y)
-                feature_pipe = make_pipeline(preprocessing, model)
-                feature_pipe.fit(X_train, y_train)
-                score = f1_score(feature_pipe.predict(X_train), y_train)
-                scores_with_candidates.append((score, candidate))
-            scores_with_candidates.sort()
-            best_new_score, best_candidate = scores_with_candidates.pop()
-            if current_score < best_new_score:
-                remaining.remove(best_candidate)
-                selected.append(best_candidate)
-                current_score = best_new_score
-    feature_df = framer(df, [selected], remaining)
-    X, y = Xy(feature_df)
-    X_train, X_test, y_train, y_test = splitter(X,y)
-    feature_pipe = make_pipeline(preprocessing, model)
-    score = f1_score(feature_pipe.predict(X_train), y_train)
-    return score
