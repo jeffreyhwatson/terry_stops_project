@@ -122,3 +122,11 @@ def subsplit_test(X_train, y_train, model):
     report = pd.DataFrame([[train_score, test_score]], columns=['Train F1', 'Test F1'])
     return report
     
+def plot_feature_importances(model, data):
+    n_features = data.shape[1]
+    plt.figure(figsize=(8, 10))
+    plt.barh(range(n_features), model.feature_importances_,
+             align='center', color=['skyblue', 'darkblue'])
+    plt.yticks(np.arange(n_features), data.columns.values)
+    plt.xlabel('Feature Importance')
+    plt.ylabel('Feature')

@@ -1,0 +1,19 @@
+digraph Tree {
+node [shape=box, style="filled", color="black"] ;
+0 [label="Initial Call Bin <= 0.5\ngini = 0.382\nsamples = 42589\nvalue = [31647, 10942]\nclass = Target", fillcolor="#eead7d"] ;
+1 [label="Precinct_NA <= 0.5\ngini = 0.113\nsamples = 12070\nvalue = [11342, 728]\nclass = Target", fillcolor="#e78946"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="Officer Age <= 0.316\ngini = 0.28\nsamples = 3970\nvalue = [3301, 669]\nclass = Target", fillcolor="#ea9b61"] ;
+1 -> 2 ;
+3 [label="gini = 0.309\nsamples = 2566\nvalue = [2077, 489]\nclass = Target", fillcolor="#eb9f68"] ;
+2 -> 3 ;
+4 [label="gini = 0.224\nsamples = 1404\nvalue = [1224, 180]\nclass = Target", fillcolor="#e99456"] ;
+2 -> 4 ;
+5 [label="Weapon Bins_OTHER <= 0.5\ngini = 0.014\nsamples = 8100\nvalue = [8041, 59]\nclass = Target", fillcolor="#e5823a"] ;
+1 -> 5 ;
+6 [label="gini = 0.014\nsamples = 8092\nvalue = [8034, 58]\nclass = Target", fillcolor="#e5823a"] ;
+5 -> 6 ;
+7 [label="gini = 0.219\nsamples = 8\nvalue = [7, 1]\nclass = Target", fillcolor="#e99355"] ;
+5 -> 7 ;
+8 [label="Weapon Bins_NONE <= 0.5\ngini = 0.445\nsamples = 30519\nvalue = [20305, 10214]\nclass = Target", fillcolor="#f2c09d"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
