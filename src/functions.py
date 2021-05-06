@@ -130,3 +130,23 @@ def plot_feature_importances(model, data):
     plt.yticks(np.arange(n_features), data.columns.values)
     plt.xlabel('Feature Importance')
     plt.ylabel('Feature')
+    
+def feature_plot(transformer, gridsearch, X):
+    # getting the matrix
+    transformer.transform(X)
+
+    # getting the list of features
+    features = list(gridsearch.best_estimator_[0].transformers_[0][1].get_feature_names())+list(X.select_dtypes('number').columns)
+
+    # getting importances from my gridsearchCV pipeline
+    importances = gridsearch.best_estimator_[1].feature_importances_
+
+    # merging  and sorting
+    sorted_importances = sorted(list(zip(features, importances)),key=lambda x: x[1], reverse=True)[:25]
+
+    #plotting
+    x = [val[0] for val in sorted_importances]
+    y = [val[1] for val in sorted_importances]
+    plt.figure(figsize=(20,6))
+    plt.bar(x, y)
+    plt.xticks(rotation=70);
