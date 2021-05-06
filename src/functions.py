@@ -149,4 +149,4 @@ def feature_plot(transformer, gridsearch, X):
     y = [val[1] for val in sorted_importances]
     plt.figure(figsize=(20,6))
     plt.bar(x, y)
-    plt.xticks(rotation=70);
+    plt.xticks(rotation=90);
