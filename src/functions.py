@@ -75,40 +75,40 @@ def splitter(X, y):
 
 
 
-def feature_test(df, model, feature_list):
-    string_selector = make_column_selector(dtype_include='object')
-    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
-    preprocessing = make_column_transformer((OneHotEncoder
-                                             (handle_unknown='ignore'),string_selector),
-                                            (StandardScaler(), number_selector))
-    modeling = c.Harness(f1)
-    for feature in feature_list:
-        feature_df = framer(df, [feature], feature_list)
-        X, y = Xy(feature_df)
-        X_train, X_test, y_train, y_test = splitter(X,y)
-        feature_pipe = make_pipeline(preprocessing, model)
-        modeling.report(feature_pipe, X_train, y_train,\
-                        f'{model} {feature} Model', f'{feature} added')
-    return modeling.history
+# def feature_test(df, model, feature_list):
+#     string_selector = make_column_selector(dtype_include='object')
+#     number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
+#     preprocessing = make_column_transformer((OneHotEncoder
+#                                              (handle_unknown='ignore'),string_selector),
+#                                             (StandardScaler(), number_selector))
+#     modeling = c.Harness(f1)
+#     for feature in feature_list:
+#         feature_df = framer(df, [feature], feature_list)
+#         X, y = Xy(feature_df)
+#         X_train, X_test, y_train, y_test = splitter(X,y)
+#         feature_pipe = make_pipeline(preprocessing, model)
+#         modeling.report(feature_pipe, X_train, y_train,\
+#                         f'{model} {feature} Model', f'{feature} added')
+#     return modeling.history
 
 
-def feature_test_sm(df, model, feature_list):
-    string_selector = make_column_selector(dtype_include='object')
-    number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
-    preprocessing = make_column_transformer((OneHotEncoder
-                                             (handle_unknown='ignore'),string_selector),
-                                            (StandardScaler(), number_selector))
-    sm = SMOTE(random_state=2021)
-    modeling = c.Harness(f1)
+# def feature_test_sm(df, model, feature_list):
+#     string_selector = make_column_selector(dtype_include='object')
+#     number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
+#     preprocessing = make_column_transformer((OneHotEncoder
+#                                              (handle_unknown='ignore'),string_selector),
+#                                             (StandardScaler(), number_selector))
+#     sm = SMOTE(random_state=2021)
+#     modeling = c.Harness(f1)
     
-    for feature in feature_list:
-        feature_df = framer(df, [feature], feature_list)
-        X, y = Xy(feature_df)
-        X_train, X_test, y_train, y_test = splitter(X,y)
-        feature_pipe = make_sm_pipeline(preprocessing, sm, model)
-        modeling.report(feature_pipe, X_train, y_train,\
-                        f'{model} {feature} Model', f'{feature} added')
-    return modeling.history        
+#     for feature in feature_list:
+#         feature_df = framer(df, [feature], feature_list)
+#         X, y = Xy(feature_df)
+#         X_train, X_test, y_train, y_test = splitter(X,y)
+#         feature_pipe = make_sm_pipeline(preprocessing, sm, model)
+#         modeling.report(feature_pipe, X_train, y_train,\
+#                         f'{model} {feature} Model', f'{feature} added')
+#     return modeling.history        
 
 
 def subsplit_test(X_train, y_train, model):
@@ -122,14 +122,14 @@ def subsplit_test(X_train, y_train, model):
     report = pd.DataFrame([[train_score, test_score]], columns=['Train F1', 'Test F1'])
     return report
     
-def plot_feature_importances(model, data):
-    n_features = data.shape[1]
-    plt.figure(figsize=(8, 10))
-    plt.barh(range(n_features), model.feature_importances_,
-             align='center', color=['skyblue', 'darkblue'])
-    plt.yticks(np.arange(n_features), data.columns.values)
-    plt.xlabel('Feature Importance')
-    plt.ylabel('Feature')
+# def plot_feature_importances(model, data):
+#     n_features = data.shape[1]
+#     plt.figure(figsize=(8, 10))
+#     plt.barh(range(n_features), model.feature_importances_,
+#              align='center', color=['skyblue', 'darkblue'])
+#     plt.yticks(np.arange(n_features), data.columns.values)
+#     plt.xlabel('Feature Importance')
+#     plt.ylabel('Feature')
     
 def feature_plot(transformer, gridsearch, X):
     # getting the matrix
