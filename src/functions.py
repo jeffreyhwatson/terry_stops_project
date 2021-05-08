@@ -28,15 +28,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def pre_score(y_true, y_pred):
+    "Precision scoring function for use in make_scorer."
     
     precision = precision_score(y_true, y_pred, zero_division=0)
 
     return precision
 
+# creating scorer object for pipelines
 precision = make_scorer(pre_score)
 
 def f_score(y_true, y_pred):
-    "f1 scoring funcion for use in make_scorer."
+    "F1 scoring function for use in make_scorer."
+    
     f1 = f1_score(y_true, y_pred)
 
     return f1
@@ -45,73 +48,45 @@ def f_score(y_true, y_pred):
 f1 = make_scorer(f_score)
 
 def confusion(model, X, y):
-    "Confusion matrix plotting aid."
+    "Returns a confusion matrix."
+    
     fig, ax = plt.subplots(figsize=(7, 7))
     plot_confusion_matrix(model, X, y,
                           cmap=plt.cm.Blues, 
                           display_labels=['No Arrest', 'Arrest'], ax=ax)
     plt.title('Confusion Matrix')
     plt.grid(False)
+#     plt.savefig('LR_Test_CM',  bbox_inches ="tight",\
+#                 pad_inches = .25, transparent = False)
     plt.show()
 
 def framer(df, col, li):
+    "Returns a data frame with selected columns."
+    
     _list = [x for x in li if x not in col]
     column_list = df.columns
     cols = [x for x in column_list if x not in _list]
     return df[cols]
 
 def Xy(df):
+    """Returns a data frame and target series."""
+    
     X = df.drop('Target', axis=1)
     y = df['Target']
     return X, y
 
 def splitter(X, y):
+    """Returns a train/test split."""
+    
     X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     random_state=2021,
                                                     stratify=y
                                                    )
     return  X_train, X_test, y_train, y_test
 
-
-
-
-# def feature_test(df, model, feature_list):
-#     string_selector = make_column_selector(dtype_include='object')
-#     number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
-#     preprocessing = make_column_transformer((OneHotEncoder
-#                                              (handle_unknown='ignore'),string_selector),
-#                                             (StandardScaler(), number_selector))
-#     modeling = c.Harness(f1)
-#     for feature in feature_list:
-#         feature_df = framer(df, [feature], feature_list)
-#         X, y = Xy(feature_df)
-#         X_train, X_test, y_train, y_test = splitter(X,y)
-#         feature_pipe = make_pipeline(preprocessing, model)
-#         modeling.report(feature_pipe, X_train, y_train,\
-#                         f'{model} {feature} Model', f'{feature} added')
-#     return modeling.history
-
-
-# def feature_test_sm(df, model, feature_list):
-#     string_selector = make_column_selector(dtype_include='object')
-#     number_selector = make_column_selector(dtype_include='number', dtype_exclude='object')
-#     preprocessing = make_column_transformer((OneHotEncoder
-#                                              (handle_unknown='ignore'),string_selector),
-#                                             (StandardScaler(), number_selector))
-#     sm = SMOTE(random_state=2021)
-#     modeling = c.Harness(f1)
-    
-#     for feature in feature_list:
-#         feature_df = framer(df, [feature], feature_list)
-#         X, y = Xy(feature_df)
-#         X_train, X_test, y_train, y_test = splitter(X,y)
-#         feature_pipe = make_sm_pipeline(preprocessing, sm, model)
-#         modeling.report(feature_pipe, X_train, y_train,\
-#                         f'{model} {feature} Model', f'{feature} added')
-#     return modeling.history        
-
-
 def subsplit_test(X_train, y_train, model):
+    """Returns train/test scores & a confusion matrix on subsplit test data."""
+    
     modeling = c.Harness(f1)
     Xs_train, Xs_test, ys_train, ys_test = splitter(X_train, y_train)
     model.fit(Xs_train, ys_train)
@@ -122,31 +97,18 @@ def subsplit_test(X_train, y_train, model):
     report = pd.DataFrame([[train_score, test_score]], columns=['Train F1', 'Test F1'])
     return report
     
-# def plot_feature_importances(model, data):
-#     n_features = data.shape[1]
-#     plt.figure(figsize=(8, 10))
-#     plt.barh(range(n_features), model.feature_importances_,
-#              align='center', color=['skyblue', 'darkblue'])
-#     plt.yticks(np.arange(n_features), data.columns.values)
-#     plt.xlabel('Feature Importance')
-#     plt.ylabel('Feature')
-    
 def feature_plot(transformer, gridsearch, X):
-    # getting the matrix
+    """Returns feature importances of the best estimator of a gridsearch."""
+    
     transformer.transform(X)
-
-    # getting the list of features
     features = list(gridsearch.best_estimator_[0].transformers_[0][1].get_feature_names())+list(X.select_dtypes('number').columns)
-
-    # getting importances from my gridsearchCV pipeline
     importances = gridsearch.best_estimator_[1].feature_importances_
-
-    # merging  and sorting
     sorted_importances = sorted(list(zip(features, importances)),key=lambda x: x[1], reverse=True)[:25]
-
-    #plotting
     x = [val[0] for val in sorted_importances]
     y = [val[1] for val in sorted_importances]
     plt.figure(figsize=(20,6))
     plt.bar(x, y)
-    plt.xticks(rotation=90);
+    plt.xticks(rotation=90)
+    plt.savefig('Feature_Imp',  bbox_inches ="tight",\
+                pad_inches = .25, transparent = False)
+    plt.show()
