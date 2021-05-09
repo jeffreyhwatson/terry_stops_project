@@ -107,8 +107,8 @@ def feature_plot(transformer, gridsearch, X):
     x = [val[0] for val in sorted_importances]
     y = [val[1] for val in sorted_importances]
     plt.figure(figsize=(20,6))
-    plt.bar(x, y)
+    plt.bar(x, y, color=['skyblue'])
     plt.xticks(rotation=90)
-    plt.savefig('Feature_Imp',  bbox_inches ="tight",\
-                pad_inches = .25, transparent = False)
+#     plt.savefig('Feature_Imp',  bbox_inches ="tight",\
+#                 pad_inches = .25, transparent = False)
     plt.show()
