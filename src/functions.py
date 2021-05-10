@@ -56,8 +56,8 @@ def confusion(model, X, y):
                           display_labels=['No Arrest', 'Arrest'], ax=ax)
     plt.title('Confusion Matrix')
     plt.grid(False)
-    plt.savefig('Base_Test_CM',  bbox_inches ="tight",\
-                pad_inches = .25, transparent = False)
+#     plt.savefig('Base_Test_CM',  bbox_inches ="tight",\
+#                 pad_inches = .25, transparent = False)
     plt.show()
 
 def framer(df, col, li):
@@ -92,7 +92,7 @@ def subsplit_test(X_train, y_train, model):
     model.fit(Xs_train, ys_train)
     train_score = f1_score(ys_train, model.predict(Xs_train))
     test_score = f1_score(ys_test, model.predict(Xs_test))
-#     confusion(model, Xs_train, ys_train)
+    confusion(model, Xs_train, ys_train)
     confusion(model, Xs_test, ys_test)
     report = pd.DataFrame([[train_score, test_score]], columns=['Train F1', 'Test F1'])
     return report
