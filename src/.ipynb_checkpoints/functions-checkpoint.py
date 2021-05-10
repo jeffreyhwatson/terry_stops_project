@@ -56,7 +56,7 @@ def confusion(model, X, y):
                           display_labels=['No Arrest', 'Arrest'], ax=ax)
     plt.title('Confusion Matrix')
     plt.grid(False)
-#     plt.savefig('Base_Test_CM',  bbox_inches ="tight",\
+#     plt.savefig('Baseline_CM',  bbox_inches ="tight",\
 #                 pad_inches = .25, transparent = False)
     plt.show()
 
@@ -94,7 +94,10 @@ def subsplit_test(X_train, y_train, model):
     test_score = f1_score(ys_test, model.predict(Xs_test))
     confusion(model, Xs_train, ys_train)
     confusion(model, Xs_test, ys_test)
-    report = pd.DataFrame([[train_score, test_score]], columns=['Train F1', 'Test F1'])
+    recall_test = recall_score(ys_test, model.predict(Xs_test))
+    precision_test = precision_score(ys_test, model.predict(Xs_test))
+    report = pd.DataFrame([[train_score, test_score, recall_test, precision_test]],\
+                          columns=['Train F1', 'Test F1', 'Test Recall', 'Test Precision'])
     return report
     
 def feature_plot(transformer, gridsearch, X):

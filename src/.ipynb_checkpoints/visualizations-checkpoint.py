@@ -176,9 +176,9 @@ def positive_odds(pipeline, X):
     plt.xlabel('')
     plt.ylabel('')
     plt.xticks(rotation=90)
-    plt.legend(title='Odds That A Major Outcome Is More Likely', labels=['Multiple'])
-    # plt.savefig('Baseline_Positive',  bbox_inches ="tight",\
-    #             pad_inches = .25, transparent = False)
+    plt.legend(title='Relative Importance to a Major Outcome', labels=['Relative Effect'])
+#     plt.savefig('Final_Positive',  bbox_inches ="tight",\
+#                 pad_inches = .25, transparent = False)
     plt.show()
     
 def negative_odds(pipeline, X):
@@ -203,9 +203,9 @@ def negative_odds(pipeline, X):
     plt.title('Relative Odds For Top 20 Negative Features')                                                 
     plt.xlabel('')
     plt.xticks(rotation=90)
-    plt.legend(title='Odds That A Minor Outcome Is More Likely', labels=['Multiple'])
-    # plt.savefig('Baseline_Negative',  bbox_inches ="tight",\
-    #             pad_inches = .25, transparent = False)
+    plt.legend(title='Relative Importance to a Minor Outcome', labels=['Relative Effect'])
+#     plt.savefig('Final_Negative',  bbox_inches ="tight",\
+#                 pad_inches = .25, transparent = False)
     plt.show()
     
     
