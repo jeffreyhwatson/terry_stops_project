@@ -180,7 +180,7 @@ A random forest classifier with a F1 accuracy score of 0.90 (recall=.92, precisi
 Next steps for the project include:
 - Implementing a feature selection algorithm. 
 - Tuning an XGBoost classifier. 
-- Further investigating the logistic regression model's adherence to the underlying assumption of logistic regression in an attempt to further quantify the effects of specific features on the model.
+- Further investigating the logistic regression model's adherence to the underlying assumptions of logistic regression.
 ***
 
 ## For More Information
