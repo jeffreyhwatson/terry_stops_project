@@ -27,6 +27,22 @@ from src import classes as c
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+def minor_major(df):
+    outcome_percent = df['Target'].value_counts('normalize=True')
+    outcomes_df = pd.DataFrame(outcome_percent)
+    outcomes_df.reset_index(inplace=True)
+    outcomes_df.columns = ['Outcome', 'Percentage']
+    fig, ax = plt.subplots(figsize=(20,8))
+    sns.barplot(x='Outcome', y='Percentage', edgecolor='deepskyblue', palette='Blues_r', data=outcomes_df)
+    ax.tick_params(labelsize=20)
+    plt.xticks(np.arange(2), ['Minor','Major'], rotation=0)
+    plt.title('Proportion of Minor and Major Outcomes', fontsize=30)
+    plt.xlabel('', fontsize=20)
+    plt.ylabel("")
+    # plt.savefig('minor_major',  bbox_inches ="tight",\
+    #             pad_inches = .25, transparent = False)
+    plt.show()
+
 def stops_by_race(df):
     # proportion of terry stops by race
     stop_percent = df['Subject Perceived Race'].value_counts('normalize=True')
