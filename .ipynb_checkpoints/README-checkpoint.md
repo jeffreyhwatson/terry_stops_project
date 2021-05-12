@@ -190,7 +190,7 @@ Next steps for the project include:
 
 ## For More Information
 
-Please review our full analysis in [our Jupyter Notebook](./notebooks/report/report.ipynb) or our [presentation](./presentation.pdf).
+Please review our full analysis in [our Jupyter Notebook](./notebooks/report/report.ipynb) or our [presentation](./reports/presentation.pdf).
 
 For any additional questions, please contact **Jeffrey Hanif Watson jeffrey.h.watson@protonmail.com**
 
