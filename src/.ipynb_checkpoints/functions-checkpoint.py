@@ -53,10 +53,10 @@ def confusion(model, X, y):
     fig, ax = plt.subplots(figsize=(7, 7))
     plot_confusion_matrix(model, X, y,
                           cmap=plt.cm.Blues, 
-                          display_labels=['No Arrest', 'Arrest'], ax=ax)
+                          display_labels=['Minor Outcome', 'Major Outcome'], ax=ax)
     plt.title('Confusion Matrix')
     plt.grid(False)
-#     plt.savefig('Baseline_CM',  bbox_inches ="tight",\
+#     plt.savefig('LR_Final_CM',  bbox_inches ="tight",\
 #                 pad_inches = .25, transparent = False)
     plt.show()
 

@@ -20,7 +20,15 @@ terry_stops.yml` in your terminal. Next, run `conda activate terry_stops`.
 ***
 ## Overview
 
-Terry stops are named after the 1968 Supreme Court decision Terry v. Ohio and involve the temporary detention of a person based on a reasonable suspicion of criminal activity. This project's goal was to create and train a predictive model, based on a dataset of Seattle Terry Stops data, for use by legal assistance organizations, law firms, and district attorneys. Stop outcomes were divided into two groups and the model was trained to predict either Minor Outcomes (Field Contact, Citation/Infraction) or Major Outcomes (Arrest, Offense Report, Referred for Prosecution). Data cleaning, eda, modeling, tuning and evaluation were performed and a random forest classifier was chosen as the the final model for the project. Since we want to avoid both false positives and false negatives for this project, an accuracy measure of F1 was employed because it is sensitive to both types of error. Since an F1 score is a mix of both precision and recall (F1=1 means perfect recall and precision), the results are more easily described in terms of recall and precision. A final F1 accuracy score of 0.90 was achieved at the end of the modeling process, and the model's recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes. Further, its precision score of .87 indicated that 87% of stops classified as major outcomes truly ended in major outcomes. An alternate logistic regression model with an F1 accuracy score of 0.89 (recall=.90, precision=.88) is also available for use if requested. Next steps for the project include implementing a feature selection algorithm, tuning an XGboost classifier, and further investigating the logistic regression model's adherence to the underlying assumptions of logistic regression in an attempt to further quantify the effect of specific features on the model.
+Terry stops are named after the 1968 Supreme Court decision Terry v. Ohio and involve the temporary detention of a person based on a reasonable suspicion of criminal activity. This project's goal was to create and train a predictive model, based on a dataset of Seattle Terry Stops data, for use by legal assistance organizations, law firms, and district attorneys. 
+
+Stop outcomes were divided into two groups and the model was trained to predict either Minor Outcomes (Field Contact, Citation/Infraction) or Major Outcomes (Arrest, Offense Report, Referred for Prosecution). 
+
+Data cleaning, eda, modeling, tuning and evaluation were performed and a random forest classifier was chosen as the the final model for the project. Because we want to avoid both false positives and false negatives for this project, an accuracy measure of F1 was employed because it is sensitive to both types of error. Since an F1 score is a mix of both precision and recall (F1=1 means perfect recall and precision), the results are more easily described in terms of recall and precision. A final F1 accuracy score of 0.90 was achieved at the end of the modeling process, and the model's recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes. Further, its precision score of .87 indicated that 87% of stops classified as major outcomes truly ended in major outcomes. 
+
+An alternate logistic regression model with an F1 accuracy score of 0.89 (recall=.90, precision=.88) is also available for use if requested. 
+
+Next steps for the project include implementing feature selection algorithms, permutation feature importance, tuning an XGboost classifier, and further investigating the logistic regression model's adherence to the underlying assumptions of logistic regression in an attempt to further quantify the effect of specific features on the model.
 ***
 ## Business Understanding
 Individuals and entities, such as legal assistance organizations, law firms, and district attorneys, that need to allocate resources based on major interactions with the judicial system can benefit from a model that can predict such interactions based on Terry stop administrative and demographic data.
@@ -145,12 +153,12 @@ After a baseline data frame and model were established, additional features were
 ### Final Logistic Regression Model
 A final logistic regression model was developed and trained on a final data frame of 42,589 rows and 21 feature columns. Categorical data was one-hot encoded and numerical data was min-max scaled.
 
-![graph9](./reports/figures/LR_Test_CM.png)
+![graph9](./reports/figures/LR_Final_CM.png)
 
-### Final Logistic Regression Scores: F1=0.89, Recall = .90, Precision = .88
+### Final Logistic Regression Scores: F1=0.89, Recall = .91, Precision = .87
 
-- A recall score of .90 means that 90% of major outcomes were correctly classified as major outcomes. 
-- A precision score of .88 indicates that 88% of stops classified as ending in a major outcome truly ended in a major outcome.
+- A recall score of .91 means that 91% of major outcomes were correctly classified as major outcomes. 
+- A precision score of .87 indicates that 87% of stops classified as ending in a major outcome truly ended in a major outcome.
 
 ![graph10](./reports/figures/LR_Final_Positive.png)
 
@@ -167,7 +175,7 @@ A random forest classifier was trained and tuned on the same data.
 
 ![graph12](./reports/figures/RF_Final_CM.png)
 
-### Final Random Forest Scores: F1=.90, Recall = .92, Precision = .87
+### Final Random Forest Scores: F1=.89, Recall = .92, Precision = .87
 
 - A recall score of .92 means that 92% of major outcomes were correctly classified as major outcomes.
 - A precision score of .87 indicates that 87% of stops classified as ending in a major outcome truly ended in a major outcome.
@@ -178,12 +186,15 @@ A random forest classifier was trained and tuned on the same data.
 As noted in the EDA section of the report, data categories of `NA` are the most important factor driving the final model. Of the first 10 features (ranked in terms of importance to the model), only 2 (`Weapon Type` = `x1_None` & `Call Type`= `x5_911`) do not involve data categories of `NA`. Even the `Call Type Bins` = `x9_OTHER` category is made up of a majority of `NA` values. Interestingly, the only two demographic categories that are present in the top features are `Officer Age` and `Subject Perceived Race`.
 ***
 ## Conclusion
-A random forest classifier with a F1 accuracy score of 0.90 (recall=.92, precision=.87) was attained at the end of the modeling process and chosen as the final model of the project. The recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes, and the precision score of .87 indicated that 87% of stops classified as ending in a major outcome truly ended in a major outcome. An alternate logistic regression model with an F1 accuracy score of 0.889 (recall=.90, precision=.88) is also available for use by interested parties.
+A random forest classifier with a F1 accuracy score of 0.90 (recall=.92, precision=.87) was attained at the end of the modeling process and chosen as the final model of the project. I found the accuracy of the model acceptable and the features driving it to be clearly in line with the discoveries uncovered during the EDA process. The recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes, and the precision score of .87 indicated that 87% of stops classified as ending in a major outcome truly ended in a major outcome. 
+
+An alternate logistic regression model with an F1 accuracy score of 0.889 (recall=.90, precision=.88) is also available for use if computational power or memory capacity are concerns.
 ***
 ## Next Steps
 
 Next steps for the project include:
-- Implementing a feature selection algorithm. 
+- Implementing a feature selection algorithm.
+- Permutation feature importance.
 - Tuning an XGBoost classifier. 
 - Further investigating the logistic regression model's adherence to the underlying assumptions of logistic regression.
 ***
