@@ -79,8 +79,8 @@ def splitter(X, y):
     """Returns a train/test split."""
     
     X_train, X_test, y_train, y_test = train_test_split(X, y,
-                                                    random_state=2021,
-                                                    stratify=y
+                                                        random_state=2021,
+                                                        stratify=y
                                                    )
     return  X_train, X_test, y_train, y_test
 
