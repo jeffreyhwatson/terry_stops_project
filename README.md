@@ -4,7 +4,7 @@
 
 ![graph0](./reports/figures/police_car.jpeg)
 
-"Police Car Lights" by davidsonscott15 is licensed with CC BY 2.0. 
+"Police Car Lights" by davidsonscott15 is licensed with CC BY 2.0.
 
 To view a copy of this license, visit [creative commons](https://creativecommons.org/licenses/by/2.0/)
 ***
@@ -15,18 +15,18 @@ To view a copy of this license, visit [creative commons](https://creativecommons
 ***
 ### Setup Instructions
 
-To setup the project environment, `cd` into the project folder and run `conda env create --file 
+To setup the project environment, `cd` into the project folder and run `conda env create --file
 terry_stops.yml` in your terminal. Next, run `conda activate terry_stops`.
 ***
 ## Overview
 
-Terry stops are named after the 1968 Supreme Court decision Terry v. Ohio and involve the temporary detention of a person based on a reasonable suspicion of criminal activity. This project's goal was to create and train a predictive model, based on a dataset of Seattle Terry Stops data, for use by legal assistance organizations, law firms, and district attorneys. 
+Terry stops are named after the 1968 Supreme Court decision Terry v. Ohio and involve the temporary detention of a person based on a reasonable suspicion of criminal activity. This project's goal was to create and train a predictive model, based on a dataset of Seattle Terry Stops data, for use by legal assistance organizations, law firms, and district attorneys.
 
-Stop outcomes were divided into two groups and the model was trained to predict either Minor Outcomes (Field Contact, Citation/Infraction) or Major Outcomes (Arrest, Offense Report, Referred for Prosecution). 
+Stop outcomes were divided into two groups and the model was trained to predict either Minor Outcomes (Field Contact, Citation/Infraction) or Major Outcomes (Arrest, Offense Report, Referred for Prosecution).
 
-Data cleaning, eda, modeling, tuning and evaluation were performed and a random forest classifier was chosen as the the final model for the project. Because we want to avoid both false positives and false negatives for this project, an accuracy measure of F1 was employed because it is sensitive to both types of error. Since an F1 score is a mix of both precision and recall (F1=1 means perfect recall and precision), the results are more easily described in terms of recall and precision. A final F1 accuracy score of 0.90 was achieved at the end of the modeling process, and the model's recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes. Further, its precision score of .87 indicated that 87% of stops classified as major outcomes truly ended in major outcomes. 
+Data cleaning, eda, modeling, tuning and evaluation were performed and a random forest classifier was chosen as the the final model for the project. Because we want to avoid both false positives and false negatives for this project, an accuracy measure of F1 was employed because it is sensitive to both types of error. Since an F1 score is a mix of both precision and recall (F1=1 means perfect recall and precision), the results are more easily described in terms of recall and precision. A final F1 accuracy score of 0.90 was achieved at the end of the modeling process, and the model's recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes. Further, its precision score of .87 indicated that 87% of stops classified as major outcomes truly ended in major outcomes.
 
-An alternate logistic regression model with an F1 accuracy score of 0.89 (recall=.90, precision=.88) is also available for use if requested. 
+An alternate logistic regression model with an F1 accuracy score of 0.89 (recall=.90, precision=.88) is also available for use if requested.
 
 Next steps for the project include implementing feature selection algorithms, permutation feature importance, tuning an XGboost classifier, and further investigating the logistic regression model's adherence to the underlying assumptions of logistic regression in an attempt to further quantify the effect of specific features on the model.
 ***
@@ -48,7 +48,7 @@ Original data columns explanations:
 ***
 ## Data Preparation
 Data cleaning details for the project can be found here:
-[Data Cleaning Notebook](notebooks/exploratory/cleaning_eda.ipynb)
+[Data Cleaning Notebook](notebooks/exploratory/clean_eda_fe.ipynb)
 
 Light data cleaning was performed to reformat certain strings and rename some categories for convenience. Nulls and placeholder values were replaced by the string `NA`. Call Time And Date features were converted to datetime objects and split. No rows were dropped during the data preparation process.
 ***
@@ -62,7 +62,7 @@ EDA for the project is detailed in the following notebooks:
 #### General Information
 
 - 59% of Stops End in a Major Outcome
-- 45% of Stops Originate from 911 Calls & 19% Are Initiated by Officer Observations. 
+- 45% of Stops Originate from 911 Calls & 19% Are Initiated by Officer Observations.
 - 82.7% of 911 originated stops end in a major outcome.
 - 66.6% of officer initiated stops end in a major outcome.
 - 11.2% of stops with no origination information end in a major outcome.
@@ -106,8 +106,8 @@ Checking to see if the disparate rate of stops and major outcomes is justified b
 
 From the visualization above, it appears that White, Hispanic, and Asian subjects are stopped less frequently than suggested by the weapon found rate. Conversely, Black subjects are stopped elevated rates relative to the weapon found rate.
 
-#### Missing Data Correlated with Minor Outcomes 
-Certain missing administrative data is correlated with minor outcomes and figures heavily in the final model. 
+#### Missing Data Correlated with Minor Outcomes
+Certain missing administrative data is correlated with minor outcomes and figures heavily in the final model.
 
 For example:
 
@@ -132,9 +132,9 @@ A baseline logistic regression model was developed and trained on an initial dat
 ### Baseline Scores: F1 = 0.87, Recall = .88, Precision = .87
 
 #### Score Interpretation
-Since we want to avoid both false positives and false negatives for this project, an accuracy measure of F1 was employed because it is sensitive to both types of error. Also, because F1 is a mix of both precision and recall, the interpretation of the results is more easily described in terms of recall and precision. 
+Since we want to avoid both false positives and false negatives for this project, an accuracy measure of F1 was employed because it is sensitive to both types of error. Also, because F1 is a mix of both precision and recall, the interpretation of the results is more easily described in terms of recall and precision.
 
-- A recall score of .88 means that 88% of major outcomes were correctly classified as major outcomes. 
+- A recall score of .88 means that 88% of major outcomes were correctly classified as major outcomes.
 - A precision score of .87 indicates that 87% of stops classified as ending in a major outcome truly ended in a major outcome.
 
 #### Baseline Relative Odds
@@ -144,7 +144,7 @@ Since we want to avoid both false positives and false negatives for this project
 ![graph8](./reports/figures/Baseline_Negative.png)
 
 #### Interpretation of the Odds
-If the assumptions of logistic regression were met by the model, we could numerically quantify the effect of each feature on the model. However, since it is beyond the scope of the project to ensure that the model meets the underlying assumptions of logistic regression, what we can say about the features above are their relative importances to the model. A higher bar means more importance of the feature to the model. 
+If the assumptions of logistic regression were met by the model, we could numerically quantify the effect of each feature on the model. However, since it is beyond the scope of the project to ensure that the model meets the underlying assumptions of logistic regression, what we can say about the features above are their relative importances to the model. A higher bar means more importance of the feature to the model.
 
 ### Feature Engineering & Intermediate Models
 
@@ -157,7 +157,7 @@ A final logistic regression model was developed and trained on a final data fram
 
 ### Final Logistic Regression Scores: F1=0.89, Recall = .91, Precision = .87
 
-- A recall score of .91 means that 91% of major outcomes were correctly classified as major outcomes. 
+- A recall score of .91 means that 91% of major outcomes were correctly classified as major outcomes.
 - A precision score of .87 indicates that 87% of stops classified as ending in a major outcome truly ended in a major outcome.
 
 ![graph10](./reports/figures/LR_Final_Positive.png)
@@ -165,7 +165,7 @@ A final logistic regression model was developed and trained on a final data fram
 ![graph11](./reports/figures/LR_Final_Negative.png)
 
 #### Relevant Features and Interpretation of Odds
-`Weapon Type` (x1), `Initial Call Type` (x4), and `Officer Squad` (x6) are the only base feature columns that are driving the final logistic regression model. 
+`Weapon Type` (x1), `Initial Call Type` (x4), and `Officer Squad` (x6) are the only base feature columns that are driving the final logistic regression model.
 
 Again, if the assumptions of logistic regression were met by the model, we could numerically quantify the effect of each feature on the model. However, with the visualization above, we can point to the relative importances of the features: a higher the bar means more importance of the feature to the model.
 
@@ -186,7 +186,7 @@ A random forest classifier was trained and tuned on the same data.
 As noted in the EDA section of the report, data categories of `NA` are the most important factor driving the final model. Of the first 10 features (ranked in terms of importance to the model), only 2 (`Weapon Type` = `x1_None` & `Call Type`= `x5_911`) do not involve data categories of `NA`. Even the `Call Type Bins` = `x9_OTHER` category is made up of a majority of `NA` values. Interestingly, the only two demographic categories that are present in the top features are `Officer Age` and `Subject Perceived Race`.
 ***
 ## Conclusion
-A random forest classifier with a F1 accuracy score of 0.90 (recall=.92, precision=.87) was attained at the end of the modeling process and chosen as the final model of the project. I found the accuracy of the model acceptable and the features driving it to be clearly in line with the discoveries uncovered during the EDA process. The recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes, and the precision score of .87 indicated that 87% of stops classified as ending in a major outcome truly ended in a major outcome. 
+A random forest classifier with a F1 accuracy score of 0.90 (recall=.92, precision=.87) was attained at the end of the modeling process and chosen as the final model of the project. I found the accuracy of the model acceptable and the features driving it to be clearly in line with the discoveries uncovered during the EDA process. The recall score of .92 meant that 92% of major outcomes were correctly classified as major outcomes, and the precision score of .87 indicated that 87% of stops classified as ending in a major outcome truly ended in a major outcome.
 
 An alternate logistic regression model with an F1 accuracy score of 0.889 (recall=.90, precision=.88) is also available for use if computational power or memory capacity are concerns.
 ***
@@ -195,7 +195,7 @@ An alternate logistic regression model with an F1 accuracy score of 0.889 (recal
 Next steps for the project include:
 - Implementing a feature selection algorithm.
 - Permutation feature importance.
-- Tuning an XGBoost classifier. 
+- Tuning an XGBoost classifier.
 - Further investigating the logistic regression model's adherence to the underlying assumptions of logistic regression.
 ***
 
